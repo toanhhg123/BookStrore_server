@@ -31,26 +31,10 @@ var SQLiteStore = sqlLite(session);
 
 app.use(
   session({
-    secret: "asdas",
+    name: "BookShopCookie",
+    secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      // this is age for the cookie in milliseconds
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-
-      // this is the key for the cookie
-      keys: "asdasd",
-
-      // An HttpOnly Cookie is a tag added to a browser cookie that prevents client-side scripts from accessing data.
-      httpOnly: false,
-
-      // Note: Standards related to the Cookie SameSite attribute recently changed such that:
-      // The cookie-sending behavior if SameSite is not specified is SameSite=Lax. Previously the default was that cookies were sent for all requests.
-      // Cookies with SameSite=None must now also specify the Secure attribute (they require a secure context/HTTPS).
-      // Cookies from the same domain are no longer considered to be from the same site if sent using a different scheme (http: or https:).
-      sameSite: "none",
-    },
-    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
   })
 );
