@@ -22,7 +22,21 @@ connectDatabase();
 const app = express();
 app.use(express.json());
 app.use(cors({ credentials: true, origin: process.env.CLIENT_HOST }));
-
+app.use(function (req, res, next) {
+  console.log(req.header.origin);
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_HOST);
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  if ("OPTIONS" == req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
+});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
@@ -32,17 +46,9 @@ var SQLiteStore = sqlLite(session);
 app.use(
   session({
     name: "BookShopCookie",
-
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    rolling: true,
-    cookie: {
-      secure: true,
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60,
-    },
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
   })
 );
