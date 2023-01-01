@@ -46,6 +46,9 @@ app.use(
 app.use(passport.authenticate("session"));
 
 // API
+app.use("/", (req, res) => {
+  res.send("app running...");
+});
 app.use("/api/import", ImportData);
 app.use("/api/categories", categorytRoute);
 app.use("/api/products", productRoute);
