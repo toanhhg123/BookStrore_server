@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
+    origin: process.env.CLIENT_HOST,
   })
 );
 
@@ -45,8 +46,8 @@ app.use(
 app.use(passport.authenticate("session"));
 
 // API
-app.get("/", (req, res) => {
-  res.send("app running1...");
+app.use("/", (req, res) => {
+  res.send("app running...");
 });
 app.use("/api/import", ImportData);
 app.use("/api/categories", categorytRoute);
