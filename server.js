@@ -21,12 +21,7 @@ dotenv.config();
 connectDatabase();
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    credentials: true,
-    origin: process.env.CLIENT_HOST,
-  })
-);
+app.use(cors({ credentials: true, origin: process.env.CLIENT_HOST }));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +40,7 @@ app.use(
 );
 app.use(passport.authenticate("session"));
 
+// API
 app.use("/api/import", ImportData);
 app.use("/api/categories", categorytRoute);
 app.use("/api/products", productRoute);
