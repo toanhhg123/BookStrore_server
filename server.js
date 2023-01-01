@@ -14,6 +14,7 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import sqlLite from "connect-sqlite3";
+import cookieParser from "cookie-parser";
 
 //
 
@@ -42,7 +43,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 var SQLiteStore = sqlLite(session);
-
+app.use(cookieParser());
 app.use(
   session({
     name: "BookShopCookie",
