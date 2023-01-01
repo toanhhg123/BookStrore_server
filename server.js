@@ -39,6 +39,7 @@ app.use(
       maxAge: 30 * 24 * 60 * 60 * 1000,
 
       // this is the key for the cookie
+      keys: "asdasd",
 
       // An HttpOnly Cookie is a tag added to a browser cookie that prevents client-side scripts from accessing data.
       httpOnly: false,
