@@ -45,7 +45,7 @@ app.use(
 app.use(passport.authenticate("session"));
 
 // API
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("app running1...");
 });
 app.use("/api/import", ImportData);
