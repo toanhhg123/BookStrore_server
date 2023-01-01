@@ -38,6 +38,7 @@ router.get(
   "/oauth2/redirect/google",
   passport.authenticate("google", {
     failureRedirect: "/google/login/faild",
+    successRedirect: process.env.CLIENT_HOST,
     scope: ["email", "profile"],
   })
 );
