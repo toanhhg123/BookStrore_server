@@ -14,6 +14,7 @@ passport.use(
       clientID: process.env["GOOGLE_CLIENT_ID"],
       clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
       callbackURL: "/google/oauth2/redirect/google",
+      proxy: true,
     },
     function verify(issuer, profile, cb) {
       console.log({ issuer, profile, cb });
