@@ -7,50 +7,42 @@ import generateToken from "../utils/generateToken.js";
 
 dotenv.config();
 const router = express.Router();
+passport.serializeUser(function (user, cb) {
+  return cb(null, user);
+});
+
+passport.deserializeUser(function (user, cb) {
+  return cb(null, user);
+});
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env["GOOGLE_CLIENT_ID"],
       clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-      callbackURL: "/google/oauth2/redirect/google",
-      proxy: true,
+      callbackURL:
+        "https://bshop-server.herokuapp.com/google/oauth2/redirect/google",
     },
-    function verify(issuer, profile, cb) {
-      console.log({ issuer, profile, cb });
-      console.log(profile.emails);
-      cb(null, profile);
+    function verify(issuser, profile, cb) {
+      return cb(null, profile);
     }
   )
 );
-passport.serializeUser(function (user, cb) {
-  process.nextTick(function () {
-    cb(null, user);
-  });
-});
-
-passport.deserializeUser(function (user, cb) {
-  process.nextTick(function () {
-    return cb(null, user);
-  });
-});
 
 router.get(
   "/login/federated/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
+
 router.get(
   "/oauth2/redirect/google",
   passport.authenticate("google", {
-    successRedirect: process.env.CLIENT_HOST,
     failureRedirect: "/google/login/faild",
     scope: ["email", "profile"],
   })
 );
 
 router.get("/login/success", async (req, res) => {
-  console.log(req.session);
-
   if (req.user) {
     const { id, displayName, emails } = req.user;
     const email = emails[0]["value"];

@@ -14,7 +14,6 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import sqlLite from "connect-sqlite3";
-import cookieParser from "cookie-parser";
 
 //
 
@@ -23,27 +22,26 @@ connectDatabase();
 const app = express();
 app.use(express.json());
 app.use(cors({ credentials: true, origin: process.env.CLIENT_HOST }));
-app.use(function (req, res, next) {
-  console.log(req.header.origin);
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", process.env.CLIENT_HOST);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  if ("OPTIONS" == req.method) {
-    res.send(200);
-  } else {
-    next();
-  }
-});
+// app.use(function (req, res, next) {
+//   console.log(req.header.origin);
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Origin", process.env.CLIENT_HOST);
+//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+//   );
+//   if ("OPTIONS" == req.method) {
+//     res.send(200);
+//   } else {
+//     next();
+//   }
+// });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 var SQLiteStore = sqlLite(session);
-app.use(cookieParser());
 app.use(
   session({
     name: "BookShopCookie",
