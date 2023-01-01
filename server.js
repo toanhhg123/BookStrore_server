@@ -31,6 +31,11 @@ var SQLiteStore = sqlLite(session);
 
 app.use(
   session({
+    name: "BookShopCookie",
+
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
     rolling: true,
     cookie: {
       secure: true,
