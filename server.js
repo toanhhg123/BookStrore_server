@@ -29,20 +29,27 @@ app.use(express.static(path.join(__dirname, "public")));
 
 var SQLiteStore = sqlLite(session);
 
+// trust proxy (https://stackoverflow.com/questions/64958647/express-not-sending-cross-domain-cookies)
+app.set("trust proxy", 1);
+
 app.use(
   session({
-    name: "BookShopCookie",
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
+    secret: "abc_123",
     cookie: {
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // must be 'none' to enable cross-site delivery
-      secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 60000000,
+      secure: process.env.NODE_ENV === "production",
     },
-    store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
+    resave: true,
+    saveUninitialized: false,
+    ttl: 60 * 60 * 24 * 30,
   })
 );
-app.use(passport.authenticate("session"));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ...
 
 // API
 app.use("/api/import", ImportData);
