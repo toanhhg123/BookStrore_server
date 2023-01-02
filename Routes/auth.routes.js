@@ -20,8 +20,7 @@ passport.use(
     {
       clientID: process.env["GOOGLE_CLIENT_ID"],
       clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-      callbackURL:
-        "https://bshop-server.herokuapp.com/google/oauth2/redirect/google",
+      callbackURL: "/google/oauth2/redirect/google",
     },
     function verify(issuser, profile, cb) {
       return cb(null, profile);
